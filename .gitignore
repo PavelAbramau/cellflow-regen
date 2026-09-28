@@ -1,0 +1,30 @@
+# Data (symlink to /fast/AG_Bunina/Pavel_1/data/cellflow)
+data
+data/
+
+# Trained model checkpoints (2.4 GB each; GitHub limit is 100 MB)
+*.pkl
+*.pt
+*.ckpt
+*.h5ad
+*.zarr/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# SLURM logs
+slurm-*.out
+*.out
+*.err
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
