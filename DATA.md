@@ -25,21 +25,6 @@ File: `data/cellflow/hf_cache/hub/datasets--theislab--cellflow-datasets/snapshot
   (Row sums of `expm1(X)` blow up/overflow, confirming X is not log space.)
 * No training was run.
 
----
-# Appendix — earlier DATA.md (from the previous cluster, commit 705be78; paths do not exist here)
-
-
-**File:** `/fast/AG_Bunina/Pavel_1/data/cellflow/pbmc_subset.h5ad` (also reachable as `/fast/AG_Bunina/Pavel_1/cellflow-regen/data/pbmc_subset.h5ad`)
-**Size:** 331,850,186 bytes (0.33 GB) · **sha256:** `61883f332841d2af7becd91d4d650d7ef24f329e5f0b33df6dd8ca617509edc1`
-**Shape:** 1,114,081 cells × 2,000 genes · all 18 cell types · written with `compression="gzip"`
-**Built by:** [`notebooks/05_build_subset.ipynb`](notebooks/05_build_subset.ipynb) (kernel `cellflow`)
-
-## Source
-* `cellflow.datasets.pbmc_cytokines()` (cellflow-tools 0.0.9, anndata 0.12.19) →
-  HF dataset `theislab/cellflow-datasets`, file `pbmc_parse.h5ad`, revision `4b235c9a1e0073c95211c6ef6257db184fc83f71`
-* 13,101,592,422 bytes, LFS sha256 `c72671b36248b82c559211a28fbf009f4f077e3b2097f9ba6a04d27d27edd4c9`
-* 9,697,974 cells × 2,000 HVGs; cached at `/fast/AG_Bunina/Pavel_1/data/cellflow/hf_cache/hub/datasets--theislab--cellflow-datasets/snapshots/4b235c9a1e0073c95211c6ef6257db184fc83f71/pbmc_parse.h5ad` (`HF_HOME=/fast/AG_Bunina/Pavel_1/data/cellflow/hf_cache`)
-
 ## Recipe
 1. **Donors (4):** `Donor8` + the 3 other donors with the most PBS cells in the full data (ties by name)
    → `['Donor8', 'Donor1', 'Donor12', 'Donor2']`
@@ -111,12 +96,3 @@ Checks passed: PBS and IL-15 present for every donor; all 20 cytokines have an e
 | LT-alpha2-beta1 | 5,061 | 13,929 | 8,533 | 5,449 | 32,972 |
 | SCF | 9,362 | 15,690 | 13,672 | 14,303 | 53,027 |
 | PBS | 43,064 | 90,452 | 71,179 | 70,520 | 275,215 |
-
-## Regenerate
-```bash
-source /fast/AG_Bunina/Pavel_1/miniforge3/bin/activate /fast/AG_Bunina/Pavel_1/miniforge3/envs/cellflow
-cd /fast/AG_Bunina/Pavel_1/cellflow-regen/notebooks
-jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=cellflow 05_build_subset.ipynb
-sha256sum /fast/AG_Bunina/Pavel_1/data/cellflow/pbmc_subset.h5ad   # should match the value above
-```
-Environment: see `/fast/AG_Bunina/Pavel_1/cellflow-regen/requirements.lock.txt` and `notebooks/02_env_setup.ipynb`.
