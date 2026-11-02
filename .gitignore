@@ -28,3 +28,17 @@ slurm-*.out
 .DS_Store
 .vscode/
 .idea/
+
+# Added: caches, logs, results, large artifacts
+.pytest_cache/
+.ipynb_checkpoints/
+logs/
+results/
+*.log
+*.npy
+*.npz
+*.parquet
+*.safetensors
+*.orbax
+*.tar.gz
+*.zip

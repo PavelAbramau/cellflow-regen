@@ -1,4 +1,33 @@
-# DATA — PBMC cytokine subset
+# DATA — full PBMC cytokine dataset (`cellflow.datasets.pbmc_cytokines()`)
+
+Inventory 2026-11-01; read via `anndata.read_h5ad(backed="r")` / h5py, no X load into memory.
+File: `data/cellflow/hf_cache/hub/datasets--theislab--cellflow-datasets/snapshots/4b235c9a…/pbmc_parse.h5ad`
+(13,101,592,422 bytes; same size as recorded sha256 `c72671b3…d4c9`; hash not re-checked). Licence of the Parse data: CC BY-NC 4.0.
+
+* **Shape**: 9,697,974 cells × 2,000 genes (HVGs, `var.highly_variable` all True); X is CSR float32, 964.5 M non-zeros; no layers, no raw.
+* **obs columns (21)**: sample, species, gene_count, tscp_count, mread_count, bc1_wind, bc2_wind, bc3_wind, bc1_well, bc2_well, bc3_well,
+  log1p_n_genes_by_counts, log1p_total_counts, total_counts_MT, pct_counts_MT, log1p_total_counts_MT, donor, cytokine, treatment, cell_type, cytokine_family
+* **var columns**: n_cells, highly_variable, means, dispersions, dispersions_norm
+* **uns keys**: donor_embeddings, esm2_embeddings, hvg, log1p (empty dict)
+* **Donors (12)**: Donor1–Donor12. **Cytokines (91)** = 90 cytokines + `PBS` control (treatment: PBS / cytokine).
+  **cell_type (18)**: B Intermediate/Memory, B Naive, CD14 Mono, CD16 Mono, CD4 Memory, CD4 Naive, CD8 Memory, CD8 Naive, HSPC, ILC, MAIT, NK, NK CD56bright, NKT, Plasmablast, Treg, cDC, pDC.
+  **cytokine_family (15 incl. NaN)**: Chemokine, Common β chain, Common γ chain/IL-13/TSLP, Complement, Growth factor, IL-1, IL-10, IL-10 (IL-20 subfamily), IL-17, IL-6/IL-12, Interferon, Interleukin - non-classified, Other, TNF, nan (PBS).
+
+## uns['esm2_embeddings']
+* Exists: **93 entries**, each a **2560-d** vector (ESM2).
+* **Not L2-normalised**: norms min 9.54, max 14.78, mean 12.84. Normalise explicitly if cosine/L2 conventions matter.
+* **Cytokines in obs missing from the dict: `PBS`** (control, expected). Dict extras not in obs: `EBI3`, `LT-alpha`, `LT-beta` (subunits of IL-35 / LT-alpha1-beta2 etc.).
+
+## Normalisation decision (BEFORE any normalize_total/log1p)
+* `X.max()` over all 964.5 M stored values = **1897.0**; all sampled values are integers ≥ 1 (min 1.0, 100 % integer); `uns['log1p']` is empty.
+* **Decision: X is raw UMI counts, NOT log-transformed.** Apply `normalize_total(target_sum=1e4)` then `log1p` (log1p(CP10k)).
+  Caveat: X holds only the 2,000 HVGs, so CP10k on X-row sums would be relative to HVG counts; per-cell totals over all genes are available in `obs['tscp_count']`/`gene_count` — use a stated choice and keep it consistent across notebooks 20–22.
+  (Row sums of `expm1(X)` blow up/overflow, confirming X is not log space.)
+* No training was run.
+
+---
+# Appendix — earlier DATA.md (from the previous cluster, commit 705be78; paths do not exist here)
+
 
 **File:** `/fast/AG_Bunina/Pavel_1/data/cellflow/pbmc_subset.h5ad` (also reachable as `/fast/AG_Bunina/Pavel_1/cellflow-regen/data/pbmc_subset.h5ad`)
 **Size:** 331,850,186 bytes (0.33 GB) · **sha256:** `61883f332841d2af7becd91d4d650d7ef24f329e5f0b33df6dd8ca617509edc1`
